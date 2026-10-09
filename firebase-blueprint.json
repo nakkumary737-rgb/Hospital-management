@@ -1,0 +1,454 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile and role metadata for Afya staff and partner facility providers",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 128 },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "role": { "type": "string", "maxLength": 50 },
+        "facilityId": { "type": "string", "maxLength": 64 },
+        "facilityName": { "type": "string", "maxLength": 128 },
+        "isActive": { "type": "boolean" },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Facility": {
+      "title": "Facility",
+      "description": "Afya Medicare central facility or approved partner provider facility",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 128 },
+        "location": { "type": "string", "maxLength": 200 },
+        "type": { "type": "string", "maxLength": 50 },
+        "contactPhone": { "type": "string", "maxLength": 50 },
+        "contactEmail": { "type": "string", "maxLength": 100 },
+        "status": { "type": "string", "maxLength": 30 },
+        "contractStatus": { "type": "string", "maxLength": 30 },
+        "allowedServices": { "type": "string", "maxLength": 1000 },
+        "settlementRule": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "name", "location", "type", "status"]
+    },
+    "Patient": {
+      "title": "Patient",
+      "description": "Master patient record with unique Afya Member ID",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "memberId": { "type": "string", "maxLength": 64 },
+        "fullName": { "type": "string", "maxLength": 128 },
+        "dob": { "type": "string", "maxLength": 32 },
+        "sex": { "type": "string", "maxLength": 20 },
+        "phone": { "type": "string", "maxLength": 32 },
+        "address": { "type": "string", "maxLength": 256 },
+        "emergencyContact": { "type": "string", "maxLength": 256 },
+        "photoUrl": { "type": "string", "maxLength": 500 },
+        "registrationDate": { "type": "string", "maxLength": 64 },
+        "status": { "type": "string", "maxLength": 30 },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "memberId", "fullName", "phone", "status"]
+    },
+    "Card": {
+      "title": "Card",
+      "description": "Physical PVC/CR80 membership credential linking to patient account",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "cardNumber": { "type": "string", "maxLength": 64 },
+        "patientId": { "type": "string", "maxLength": 64 },
+        "cardType": { "type": "string", "maxLength": 50 },
+        "qrIdentifier": { "type": "string", "maxLength": 128 },
+        "nfcIdentifier": { "type": "string", "maxLength": 128 },
+        "issueDate": { "type": "string", "maxLength": 64 },
+        "expiryDate": { "type": "string", "maxLength": 64 },
+        "status": { "type": "string", "maxLength": 30 },
+        "replacementReason": { "type": "string", "maxLength": 256 },
+        "replacedCardId": { "type": "string", "maxLength": 64 },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "cardNumber", "patientId", "cardType", "qrIdentifier", "status"]
+    },
+    "Package": {
+      "title": "Package",
+      "description": "Healthcare membership package definition configurable by administrator",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 128 },
+        "packageType": { "type": "string", "maxLength": 50 },
+        "price": { "type": "number" },
+        "currency": { "type": "string", "maxLength": 10 },
+        "visitsPurchased": { "type": "number" },
+        "validityDays": { "type": "number" },
+        "coveredServices": { "type": "string", "maxLength": 2000 },
+        "excludedServices": { "type": "string", "maxLength": 2000 },
+        "labBenefits": { "type": "string", "maxLength": 1000 },
+        "consultationBenefits": { "type": "string", "maxLength": 1000 },
+        "ultrasoundBenefits": { "type": "string", "maxLength": 1000 },
+        "medicationBenefits": { "type": "string", "maxLength": 1000 },
+        "specialistBenefits": { "type": "string", "maxLength": 1000 },
+        "emergencyBenefits": { "type": "string", "maxLength": 1000 },
+        "familyRules": { "type": "string", "maxLength": 1000 },
+        "renewalRules": { "type": "string", "maxLength": 1000 },
+        "isActive": { "type": "boolean" },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "name", "packageType", "price", "visitsPurchased", "validityDays", "isActive"]
+    },
+    "Membership": {
+      "title": "Membership",
+      "description": "Active healthcare package membership assigned to patient with dynamic visit formula",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "patientId": { "type": "string", "maxLength": 64 },
+        "packageId": { "type": "string", "maxLength": 64 },
+        "packageName": { "type": "string", "maxLength": 128 },
+        "startDate": { "type": "string", "maxLength": 64 },
+        "expiryDate": { "type": "string", "maxLength": 64 },
+        "visitsPurchased": { "type": "number" },
+        "visitsUsed": { "type": "number" },
+        "visitsRemaining": { "type": "number" },
+        "status": { "type": "string", "maxLength": 30 },
+        "isFamilyPackage": { "type": "boolean" },
+        "familyAllocationModel": { "type": "string", "maxLength": 30 },
+        "primaryMemberId": { "type": "string", "maxLength": 64 },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "patientId", "packageId", "visitsPurchased", "visitsUsed", "visitsRemaining", "status"]
+    },
+    "FamilyMember": {
+      "title": "FamilyMember",
+      "description": "Dependent linked to family membership with individual or shared visit allocations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "primaryPatientId": { "type": "string", "maxLength": 64 },
+        "dependentPatientId": { "type": "string", "maxLength": 64 },
+        "dependentName": { "type": "string", "maxLength": 128 },
+        "relationship": { "type": "string", "maxLength": 50 },
+        "membershipId": { "type": "string", "maxLength": 64 },
+        "allocatedVisits": { "type": "number" },
+        "usedVisits": { "type": "number" },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "primaryPatientId", "dependentPatientId", "membershipId"]
+    },
+    "ChronicProgram": {
+      "title": "ChronicProgram",
+      "description": "Chronic disease management program configuration",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 128 },
+        "condition": { "type": "string", "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 500 },
+        "visitRule": { "type": "string", "maxLength": 50 },
+        "definedVisits": { "type": "number" },
+        "medicationBenefits": { "type": "string", "maxLength": 1000 },
+        "labBenefits": { "type": "string", "maxLength": 1000 },
+        "monthlyFee": { "type": "number" },
+        "currency": { "type": "string", "maxLength": 10 },
+        "isActive": { "type": "boolean" },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "name", "condition", "monthlyFee", "isActive"]
+    },
+    "ChronicMembership": {
+      "title": "ChronicMembership",
+      "description": "Chronic disease membership record with monthly renewal state",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "patientId": { "type": "string", "maxLength": 64 },
+        "programId": { "type": "string", "maxLength": 64 },
+        "programName": { "type": "string", "maxLength": 128 },
+        "status": { "type": "string", "maxLength": 30 },
+        "currentPaidMonth": { "type": "string", "maxLength": 30 },
+        "renewalDate": { "type": "string", "maxLength": 64 },
+        "nextReviewDate": { "type": "string", "maxLength": 64 },
+        "currentMedications": { "type": "string", "maxLength": 1000 },
+        "consultationHistory": { "type": "string", "maxLength": 2000 },
+        "lastPickupDate": { "type": "string", "maxLength": 64 },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "patientId", "programId", "status", "currentPaidMonth"]
+    },
+    "SickleCellProfile": {
+      "title": "SickleCellProfile",
+      "description": "Purely clinical identity profile for Sickle Cell program (no financial tracking)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "patientId": { "type": "string", "maxLength": 64 },
+        "genotype": { "type": "string", "maxLength": 50 },
+        "bloodGroup": { "type": "string", "maxLength": 20 },
+        "allergies": { "type": "string", "maxLength": 500 },
+        "baselineWeight": { "type": "number" },
+        "currentMedications": { "type": "string", "maxLength": 1000 },
+        "carePlan": { "type": "string", "maxLength": 2000 },
+        "clinicalAlerts": { "type": "string", "maxLength": 1000 },
+        "lastReviewDate": { "type": "string", "maxLength": 64 },
+        "nextReviewDate": { "type": "string", "maxLength": 64 },
+        "emergencyProtocol": { "type": "string", "maxLength": 1000 },
+        "referralCenter": { "type": "string", "maxLength": 200 },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "patientId", "genotype", "bloodGroup"]
+    },
+    "Visit": {
+      "title": "Visit",
+      "description": "Clinical encounter and benefit consumption record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "patientId": { "type": "string", "maxLength": 64 },
+        "patientName": { "type": "string", "maxLength": 128 },
+        "cardId": { "type": "string", "maxLength": 64 },
+        "facilityId": { "type": "string", "maxLength": 64 },
+        "facilityName": { "type": "string", "maxLength": 128 },
+        "department": { "type": "string", "maxLength": 64 },
+        "providerName": { "type": "string", "maxLength": 128 },
+        "serviceName": { "type": "string", "maxLength": 128 },
+        "packageId": { "type": "string", "maxLength": 64 },
+        "coverageStatus": { "type": "string", "maxLength": 50 },
+        "visitDeducted": { "type": "boolean" },
+        "copaymentAmount": { "type": "number" },
+        "authorizationId": { "type": "string", "maxLength": 64 },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "status": { "type": "string", "maxLength": 30 },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "patientId", "facilityId", "serviceName", "coverageStatus", "status"]
+    },
+    "Payment": {
+      "title": "Payment",
+      "description": "Healthcare membership payment transaction ledger",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "receiptNumber": { "type": "string", "maxLength": 64 },
+        "patientId": { "type": "string", "maxLength": 64 },
+        "patientName": { "type": "string", "maxLength": 128 },
+        "membershipId": { "type": "string", "maxLength": 64 },
+        "chronicMembershipId": { "type": "string", "maxLength": 64 },
+        "itemDescription": { "type": "string", "maxLength": 256 },
+        "amount": { "type": "number" },
+        "currency": { "type": "string", "maxLength": 10 },
+        "paymentMethod": { "type": "string", "maxLength": 50 },
+        "referenceNumber": { "type": "string", "maxLength": 128 },
+        "staffId": { "type": "string", "maxLength": 64 },
+        "staffName": { "type": "string", "maxLength": 128 },
+        "status": { "type": "string", "maxLength": 30 },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "receiptNumber", "patientId", "amount", "currency", "paymentMethod", "status"]
+    },
+    "Receipt": {
+      "title": "Receipt",
+      "description": "Auditable receipt record generated for healthcare membership payments",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "receiptNumber": { "type": "string", "maxLength": 64 },
+        "paymentId": { "type": "string", "maxLength": 64 },
+        "patientId": { "type": "string", "maxLength": 64 },
+        "patientName": { "type": "string", "maxLength": 128 },
+        "memberId": { "type": "string", "maxLength": 64 },
+        "amount": { "type": "number" },
+        "currency": { "type": "string", "maxLength": 10 },
+        "paymentMethod": { "type": "string", "maxLength": 50 },
+        "description": { "type": "string", "maxLength": 256 },
+        "staffName": { "type": "string", "maxLength": 128 },
+        "facilityName": { "type": "string", "maxLength": 128 },
+        "facilityLocation": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "receiptNumber", "paymentId", "patientId", "amount"]
+    },
+    "Authorization": {
+      "title": "Authorization",
+      "description": "Pre-service eligibility authorization for partner or central facilities",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "authNumber": { "type": "string", "maxLength": 64 },
+        "patientId": { "type": "string", "maxLength": 64 },
+        "patientName": { "type": "string", "maxLength": 128 },
+        "cardId": { "type": "string", "maxLength": 64 },
+        "facilityId": { "type": "string", "maxLength": 64 },
+        "facilityName": { "type": "string", "maxLength": 128 },
+        "serviceName": { "type": "string", "maxLength": 128 },
+        "packageId": { "type": "string", "maxLength": 64 },
+        "benefitRule": { "type": "string", "maxLength": 500 },
+        "approvedAmount": { "type": "number" },
+        "status": { "type": "string", "maxLength": 30 },
+        "expiryDate": { "type": "string", "maxLength": 64 },
+        "requestingStaff": { "type": "string", "maxLength": 128 },
+        "reviewNotes": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "authNumber", "patientId", "facilityId", "serviceName", "status"]
+    },
+    "Claim": {
+      "title": "Claim",
+      "description": "Post-service provider reimbursement claim submitted by partner facility",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "authorizationId": { "type": "string", "maxLength": 64 },
+        "patientId": { "type": "string", "maxLength": 64 },
+        "facilityId": { "type": "string", "maxLength": 64 },
+        "facilityName": { "type": "string", "maxLength": 128 },
+        "serviceName": { "type": "string", "maxLength": 128 },
+        "providerName": { "type": "string", "maxLength": 128 },
+        "amountClaimed": { "type": "number" },
+        "amountApproved": { "type": "number" },
+        "status": { "type": "string", "maxLength": 30 },
+        "serviceDate": { "type": "string", "maxLength": 64 },
+        "submissionDate": { "type": "string", "maxLength": 64 },
+        "adjudicationNotes": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "authorizationId", "facilityId", "amountClaimed", "status"]
+    },
+    "Settlement": {
+      "title": "Settlement",
+      "description": "Periodic settlement batch statement for partner facility reimbursement",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "facilityId": { "type": "string", "maxLength": 64 },
+        "facilityName": { "type": "string", "maxLength": 128 },
+        "period": { "type": "string", "maxLength": 64 },
+        "claimsCount": { "type": "number" },
+        "claimedTotal": { "type": "number" },
+        "approvedTotal": { "type": "number" },
+        "adjustments": { "type": "number" },
+        "amountPayable": { "type": "number" },
+        "paymentStatus": { "type": "string", "maxLength": 30 },
+        "paymentReference": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "facilityId", "period", "approvedTotal", "amountPayable", "paymentStatus"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Auditable log for high-value actions, reversals, visit deductions, card blocks",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "userId": { "type": "string", "maxLength": 64 },
+        "userName": { "type": "string", "maxLength": 128 },
+        "action": { "type": "string", "maxLength": 100 },
+        "entityType": { "type": "string", "maxLength": 64 },
+        "entityId": { "type": "string", "maxLength": 64 },
+        "oldValue": { "type": "string", "maxLength": 1000 },
+        "newValue": { "type": "string", "maxLength": 1000 },
+        "timestamp": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "userId", "action", "entityType", "entityId", "timestamp"]
+    },
+    "InventoryItem": {
+      "title": "InventoryItem",
+      "description": "Stock inventory item for medications, consumables, and billing lines",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 128 },
+        "sku": { "type": "string", "maxLength": 64 },
+        "category": { "type": "string", "maxLength": 64 },
+        "unit": { "type": "string", "maxLength": 32 },
+        "stock": { "type": "number" },
+        "minStock": { "type": "number" },
+        "unitPrice": { "type": "number" },
+        "isCoveredByPackages": { "type": "boolean" },
+        "coveredCategory": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "name", "sku", "unitPrice", "stock"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "UserProfile" },
+      "description": "User profiles and assigned role"
+    },
+    "/facilities/{facilityId}": {
+      "schema": { "$ref": "Facility" },
+      "description": "Central Afya Medicare and partner facility records"
+    },
+    "/patients/{patientId}": {
+      "schema": { "$ref": "Patient" },
+      "description": "Patients registered in Afya network"
+    },
+    "/cards/{cardId}": {
+      "schema": { "$ref": "Card" },
+      "description": "Card credentials (Health Package, Chronic Care, Sickle Cell)"
+    },
+    "/packages/{packageId}": {
+      "schema": { "$ref": "Package" },
+      "description": "Admin configurable healthcare membership packages"
+    },
+    "/memberships/{membershipId}": {
+      "schema": { "$ref": "Membership" },
+      "description": "Patient package memberships with dynamic visit balance tracking"
+    },
+    "/familyMembers/{familyMemberId}": {
+      "schema": { "$ref": "FamilyMember" },
+      "description": "Family package dependents and visit allocation"
+    },
+    "/chronicPrograms/{programId}": {
+      "schema": { "$ref": "ChronicProgram" },
+      "description": "Configurable chronic disease programs"
+    },
+    "/chronicMemberships/{chronicId}": {
+      "schema": { "$ref": "ChronicMembership" },
+      "description": "Patient chronic disease monthly renewals and clinical follow-up"
+    },
+    "/sickleCellProfiles/{profileId}": {
+      "schema": { "$ref": "SickleCellProfile" },
+      "description": "Clinical identity profiles for Sickle Cell program patients"
+    },
+    "/visits/{visitId}": {
+      "schema": { "$ref": "Visit" },
+      "description": "Patient visits and encounters"
+    },
+    "/payments/{paymentId}": {
+      "schema": { "$ref": "Payment" },
+      "description": "Healthcare membership payment ledger"
+    },
+    "/receipts/{receiptId}": {
+      "schema": { "$ref": "Receipt" },
+      "description": "Print-friendly official receipts"
+    },
+    "/authorizations/{authId}": {
+      "schema": { "$ref": "Authorization" },
+      "description": "Partner service pre-authorizations"
+    },
+    "/claims/{claimId}": {
+      "schema": { "$ref": "Claim" },
+      "description": "Reimbursement claims submitted by partner facilities"
+    },
+    "/settlements/{settlementId}": {
+      "schema": { "$ref": "Settlement" },
+      "description": "Facility settlement statements"
+    },
+    "/inventoryItems/{itemId}": {
+      "schema": { "$ref": "InventoryItem" },
+      "description": "Inventory stock catalog items for medicines, consumables, and billing lines"
+    },
+    "/auditLogs/{logId}": {
+      "schema": { "$ref": "AuditLog" },
+      "description": "Audit trail of deductions, updates, and cancellations"
+    }
+  }
+}
